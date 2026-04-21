@@ -2,23 +2,20 @@ const API_URL = 'http://localhost:5678/api'
 
 let allWorks = []
 
-// ── 1. Récupérer les travaux depuis l'API ──────────────
+// ── 1. Récupérer les travaux ───────────────────────────
 async function fetchWorks() {
   const response = await fetch(`${API_URL}/works`)
-  const works = await response.json()
-  return works
+  return await response.json()
 }
 
-// ── 2. Créer un élément <figure> pour un travail ───────
+// ── 2. Créer un élément <figure> ───────────────────────
 function createWorkElement(work) {
   const figure     = document.createElement('figure')
   const img        = document.createElement('img')
   const figcaption = document.createElement('figcaption')
-
   img.src                = work.imageUrl
   img.alt                = work.title
   figcaption.textContent = work.title
-
   figure.appendChild(img)
   figure.appendChild(figcaption)
   figure.dataset.id       = work.id
@@ -26,119 +23,79 @@ function createWorkElement(work) {
   return figure
 }
 
-// ── 3. Afficher les travaux dans la galerie ────────────
+// ── 3. Afficher les travaux ────────────────────────────
 function displayWorks(works) {
   const gallery = document.querySelector('.gallery')
   gallery.innerHTML = ''
   works.forEach(work => gallery.appendChild(createWorkElement(work)))
 }
 
-// ── 4. Initialisation ──────────────────────────────────
+// ── 4. Init ────────────────────────────────────────────
 async function init() {
   allWorks = await fetchWorks()
   displayWorks(allWorks)
-
- const categories = await fetchCategories()   // ← ligne ajoutée
-  createFilterButtons(categories)              // ← ligne ajoutée
-  checkAdminMode()              // ← ligne ajoutée
+  const categories = await fetchCategories()
+  createFilterButtons(categories)
+  checkAdminMode()
 }
-
-
-
 init()
 
-// ── 5. Récupérer les catégories depuis l'API ───────────
+// ── 5. Catégories ──────────────────────────────────────
 async function fetchCategories() {
   const response = await fetch(`${API_URL}/categories`)
   return await response.json()
 }
 
-// ── 6. Créer les boutons de filtre ─────────────────────
+// ── 6. Filtres ─────────────────────────────────────────
 function createFilterButtons(categories) {
   const filtersDiv = document.querySelector('.filters')
-
-  // Bouton "Tous" en premier
   const btnAll = document.createElement('button')
   btnAll.textContent = 'Tous'
   btnAll.classList.add('active')
-  btnAll.addEventListener('click', () => {
-    displayWorks(allWorks)
-    setActiveBtn(btnAll)
-  })
+  btnAll.addEventListener('click', () => { displayWorks(allWorks); setActiveBtn(btnAll) })
   filtersDiv.appendChild(btnAll)
-
-  // Un bouton par catégorie
   categories.forEach(cat => {
     const btn = document.createElement('button')
     btn.textContent = cat.name
     btn.addEventListener('click', () => {
-      const filtered = allWorks.filter(w => w.categoryId === cat.id)
-      displayWorks(filtered)
+      displayWorks(allWorks.filter(w => w.categoryId === cat.id))
       setActiveBtn(btn)
     })
     filtersDiv.appendChild(btn)
   })
 }
 
-// ── 7. Gérer le bouton actif ───────────────────────────
 function setActiveBtn(activeBtn) {
-  document.querySelectorAll('.filters button').forEach(b => {
-    b.classList.remove('active')
-  })
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'))
   activeBtn.classList.add('active')
 }
-// ── 8. Mode admin ──────────────────────────────────────
+
+// ── 7. Mode admin ──────────────────────────────────────
 function checkAdminMode() {
   const token = localStorage.getItem('token')
-
   if (token) {
-    // Changer login en logout
     const navLogin = document.querySelector('#nav-login')
     navLogin.textContent = 'logout'
     navLogin.removeAttribute('href')
-    navLogin.addEventListener('click', () => {
-      localStorage.removeItem('token')
-      location.reload()
-    })
-
-    // Afficher le bandeau mode édition
+    navLogin.addEventListener('click', () => { localStorage.removeItem('token'); location.reload() })
     document.querySelector('.edit-banner').style.display = 'flex'
-
-    // Afficher le bouton modifier
-    document.querySelector('.btn-edit').style.display = 'block'
-
-    // Masquer les filtres
+    document.querySelector('.btn-edit').style.display = 'flex'
     document.querySelector('.filters').style.display = 'none'
   }
 }
-// ── 9. Gestion de la modale ────────────────────────────
+
+// ── 8. Modale ──────────────────────────────────────────
 const modal    = document.querySelector('#modal')
 const btnClose = document.querySelector('.modal-close')
 const btnBack  = document.querySelector('.modal-back')
 const btnAdd   = document.querySelector('#btn-add-photo')
 const btnEdit  = document.querySelector('.btn-edit')
 
-if (btnEdit) {
-  btnEdit.addEventListener('click', () => {
-    modal.classList.remove('hidden')
-    loadModalGallery()
-  })
-}
+if (btnEdit) btnEdit.addEventListener('click', () => { modal.classList.remove('hidden'); loadModalGallery() })
+if (btnClose) btnClose.addEventListener('click', closeModal)
+if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal() })
 
-if (btnClose) {
-  btnClose.addEventListener('click', closeModal)
-}
-
-if (modal) {
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal()
-  })
-}
-
-function closeModal() {
-  modal.classList.add('hidden')
-  showGalleryView()
-}
+function closeModal() { modal.classList.add('hidden'); showGalleryView() }
 
 if (btnAdd) {
   btnAdd.addEventListener('click', () => {
@@ -148,18 +105,21 @@ if (btnAdd) {
     fillCategorySelect()
   })
 }
-
-if (btnBack) {
-  btnBack.addEventListener('click', showGalleryView)
-}
+if (btnBack) btnBack.addEventListener('click', showGalleryView)
 
 function showGalleryView() {
   document.querySelector('#modal-gallery').classList.remove('hidden')
   document.querySelector('#modal-form').classList.add('hidden')
   btnBack.classList.add('hidden')
+  resetForm()
 }
 
-// ── 10. Charger les photos dans la modale ──────────────
+// ── 9. Galerie modale ─────────────────────────────────
+// SVG poubelle propre pour le bouton haut-droit
+const TRASH_SVG = `<svg class="trash-icon" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M1.5 3.5h11M5 3.5V2.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1M6 6.5v4M8 6.5v4M2.5 3.5l.75 7.5a1 1 0 0 0 1 .9h5.5a1 1 0 0 0 1-.9l.75-7.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`
+
 function loadModalGallery() {
   const container = document.querySelector('.modal-photos')
   container.innerHTML = ''
@@ -167,17 +127,18 @@ function loadModalGallery() {
     const figure = document.createElement('figure')
     const img    = document.createElement('img')
     const btn    = document.createElement('button')
-    img.src       = work.imageUrl
-    img.alt       = work.title
-    btn.innerHTML = '🗑'
-    btn.addEventListener('click', () => deleteWork(work.id, figure))
+    img.src      = work.imageUrl
+    img.alt      = work.title
+    btn.innerHTML = TRASH_SVG
+    btn.title    = 'Supprimer'
+    btn.addEventListener('click', (e) => { e.stopPropagation(); deleteWork(work.id, figure) })
     figure.appendChild(img)
     figure.appendChild(btn)
     container.appendChild(figure)
   })
 }
 
-// ── 11. Supprimer un travail ───────────────────────────
+// ── 10. Supprimer ──────────────────────────────────────
 async function deleteWork(id, figureElement) {
   const token = localStorage.getItem('token')
   const response = await fetch(`${API_URL}/works/${id}`, {
@@ -186,39 +147,81 @@ async function deleteWork(id, figureElement) {
   })
   if (response.ok) {
     figureElement.remove()
-    const galleryFigure = document.querySelector(`.gallery [data-id='${id}']`)
-    if (galleryFigure) galleryFigure.remove()
+    const gf = document.querySelector(`.gallery [data-id='${id}']`)
+    if (gf) gf.remove()
     allWorks = allWorks.filter(w => w.id !== id)
   }
 }
 
-// ── 12. Remplir le select des catégories ──────────────
+// ── 11. Select catégories ──────────────────────────────
 async function fillCategorySelect() {
   const categories = await fetchCategories()
   const select = document.querySelector('#work-category')
-  select.innerHTML = '<option value="">-- Choisir --</option>'
+  select.innerHTML = '<option value=""></option>'
   categories.forEach(cat => {
     const option = document.createElement('option')
     option.value       = cat.id
     option.textContent = cat.name
     select.appendChild(option)
   })
+  checkFormValidity()
 }
 
-// ── 13. Preview de l'image ─────────────────────────────
-const workImage = document.querySelector('#work-image')
+// ── 12. Upload & preview ───────────────────────────────
+const uploadZone        = document.querySelector('#upload-zone')
+const workImage         = document.querySelector('#work-image')
+const preview           = document.querySelector('#preview')
+const uploadPlaceholder = document.querySelector('#upload-placeholder')
+const btnUploadTrigger  = document.querySelector('#btn-upload-trigger')
+
+if (btnUploadTrigger) {
+  btnUploadTrigger.addEventListener('click', (e) => { e.stopPropagation(); workImage.click() })
+}
+if (uploadZone) {
+  uploadZone.addEventListener('click', () => workImage.click())
+}
 if (workImage) {
   workImage.addEventListener('change', (e) => {
-    const file    = e.target.files[0]
-    const preview = document.querySelector('#preview')
+    const file = e.target.files[0]
     if (file) {
-      preview.src           = URL.createObjectURL(file)
+      preview.src = URL.createObjectURL(file)
       preview.style.display = 'block'
+      if (uploadPlaceholder) uploadPlaceholder.style.display = 'none'
     }
+    checkFormValidity()
   })
 }
 
-// ── 14. Ajouter un travail ─────────────────────────────
+// ── 13. Validation Valider ────────────────────────────
+function checkFormValidity() {
+  const image    = workImage && workImage.files[0]
+  const title    = document.querySelector('#work-title')
+  const category = document.querySelector('#work-category')
+  const btnVal   = document.querySelector('#btn-valider')
+  if (!btnVal) return
+  const ok = !!(image && title && title.value.trim() !== '' && category && category.value !== '')
+  btnVal.disabled = !ok
+  btnVal.classList.toggle('active', ok)
+}
+
+const workTitle    = document.querySelector('#work-title')
+const workCategory = document.querySelector('#work-category')
+if (workTitle)    workTitle.addEventListener('input', checkFormValidity)
+if (workCategory) workCategory.addEventListener('change', checkFormValidity)
+
+// ── 14. Reset formulaire ───────────────────────────────
+function resetForm() {
+  const form = document.querySelector('#add-work-form')
+  if (form) form.reset()
+  if (preview) { preview.src = ''; preview.style.display = 'none' }
+  if (uploadPlaceholder) uploadPlaceholder.style.display = 'flex'
+  const btnVal = document.querySelector('#btn-valider')
+  if (btnVal) { btnVal.disabled = true; btnVal.classList.remove('active') }
+  const formError = document.querySelector('#form-error')
+  if (formError) formError.style.display = 'none'
+}
+
+// ── 15. Ajouter un travail ─────────────────────────────
 const addWorkForm = document.querySelector('#add-work-form')
 if (addWorkForm) {
   addWorkForm.addEventListener('submit', async (e) => {
@@ -234,8 +237,8 @@ if (addWorkForm) {
       return
     }
     const formData = new FormData()
-    formData.append('image',    image)
-    formData.append('title',    title)
+    formData.append('image', image)
+    formData.append('title', title)
     formData.append('category', category)
     const response = await fetch(`${API_URL}/works`, {
       method: 'POST',
@@ -249,6 +252,9 @@ if (addWorkForm) {
       loadModalGallery()
       showGalleryView()
       formError.style.display = 'none'
+    } else {
+      formError.style.display = 'block'
+      formError.textContent   = 'Erreur lors de l\'ajout. Réessaie.'
     }
   })
 }

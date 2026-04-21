@@ -345,7 +345,8 @@ footer nav ul {
   padding: 2rem;
   border-radius: 10px;
   width: 630px;
-  max-height: 85vh;
+  min-height: 680px;
+  max-height: 90vh;
   overflow-y: auto;
   position: relative;
 }
@@ -402,23 +403,22 @@ footer nav ul {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-#modal-form input,
-#modal-form select {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  flex: 1;
 }
 
 #modal-form button[type="submit"] {
+  margin-top: auto;
   background-color: #1d6154;
   color: white;
   padding: 0.75rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 60px;
   cursor: pointer;
   font-size: 1rem;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 600;
+  width: 220px;
+  align-self: center;
 }
 
 #preview {
@@ -426,3 +426,281 @@ footer nav ul {
   max-height: 169px;
   object-fit: cover;
 }
+
+/* ══════════════════════════════════════════════
+   MODIFICATIONS P6 v3 — Précision screenshots
+   ══════════════════════════════════════════════ */
+
+/* ── Portfolio header : h2 + btn-edit alignés sur la même ligne ── */
+.portfolio-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 2em;
+}
+
+/* Annuler le margin-bottom du h2 dans portfolio-header */
+.portfolio-header h2 {
+  margin-bottom: 0;
+  text-align: left;
+  line-height: 1;
+}
+
+/* Bouton modifier — noir, aligné avec h2 */
+.btn-edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  line-height: 1;
+}
+
+.btn-edit:hover { opacity: 0.6; }
+
+/* ── Modale overlay ── */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* ── Modale wrapper — taille identique pour les 2 vues ── */
+/* Galerie : ~620px x 680px | Ajout : ~540px x 680px
+   On utilise 630px pour harmoniser comme sur les screenshots */
+.modal-wrapper {
+  background-color: #fff;
+  border-radius: 10px;
+  width: 630px;
+  min-height: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 40px 46px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Boutons fermer / retour ── */
+.modal-close {
+  position: absolute;
+  top: 16px; right: 20px;
+  background: none; border: none;
+  font-size: 22px; cursor: pointer;
+  color: #333; line-height: 1;
+}
+.modal-back {
+  position: absolute;
+  top: 16px; left: 20px;
+  background: none; border: none;
+  font-size: 20px; cursor: pointer;
+  color: #333; line-height: 1;
+}
+.modal-close:hover, .modal-back:hover { opacity: 0.6; }
+
+/* ── Titres modale ── */
+#modal-gallery h3,
+#modal-form h3 {
+  font-family: "Syne", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  color: #000;
+  margin-bottom: 28px;
+}
+
+/* ── VUE 1 : Galerie photos — grille 5 colonnes ── */
+.modal-photos {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.modal-photos figure {
+  position: relative;
+  margin: 0;
+}
+
+.modal-photos figure img {
+  width: 100%;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
+
+/* Poubelle en HAUT à droite — comme sur le screenshot */
+.modal-photos figure button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0,0,0,0.70);
+  border: none;
+  cursor: pointer;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0;
+  transition: background 0.15s;
+}
+.modal-photos figure button:hover { background: rgba(0,0,0,0.9); }
+
+.trash-icon {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+/* ── Séparateur ── */
+.modal-hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
+}
+
+/* ── Bouton "Ajouter une photo" (vue 1) — poussé en bas ── */
+#btn-add-photo {
+  display: block;
+  margin: auto auto 0;
+  background-color: #1d6154;
+  color: white;
+  border: none;
+  border-radius: 60px;
+  padding: 14px 0;
+  width: 220px;
+  text-align: center;
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#btn-add-photo:hover { background-color: #174f44; }
+
+/* ── VUE 2 : Zone upload ── */
+.upload-zone {
+  background-color: #e8eff2;
+  border-radius: 8px;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.upload-icon svg { display: block; }
+
+.btn-upload-trigger {
+  background-color: #c8d8e0;
+  color: #1d6154;
+  border: none;
+  border-radius: 60px;
+  padding: 8px 22px;
+  font-family: "Work Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-upload-trigger:hover { background-color: #b0c8d4; }
+
+.upload-hint {
+  font-size: 11px;
+  color: #888;
+  font-family: "Work Sans", sans-serif;
+}
+
+#preview {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Champs formulaire ── */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.form-field label {
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
+
+.form-field input,
+.form-field select {
+  padding: 12px 14px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  color: #333;
+  background: white;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-field input:focus,
+.form-field select:focus { border-color: #1d6154; }
+
+.form-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+/* ── Bouton Valider ──
+   Screenshot : vert plein, largeur ~240px, arrondi
+   Désactivé quand champs vides, activé dès que tout est rempli */
+.btn-valider {
+  display: block;
+  width: 240px;
+  margin: 0 auto;
+  background-color: #a0a0a0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 0;
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: not-allowed;
+  transition: background 0.2s;
+}
+.btn-valider.active {
+  background-color: #1d6154;
+  cursor: pointer;
+}
+.btn-valider.active:hover { background-color: #174f44; }

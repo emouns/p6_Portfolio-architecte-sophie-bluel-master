@@ -10,102 +10,128 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
-
 <body>
 	<div class="edit-banner" style="display:none;">
-    <p>Mode édition</p>
-</div>
-<header>
-	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-	<nav>
-		<ul>
-			<li>projets</li>
-			<li>contact</li>
-			<li><a href="./login.html" id="nav-login">login</a></li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-		</ul>
-	</nav>
-</header>
-<main>
-	<section id="introduction">
-		<figure>
-			<img src="./assets/images/sophie-bluel.png" alt="">
-		</figure>
-		<article>
-			<h2>Designer d'espace</h2>
-			<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
-			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
-			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
-		</article>
-	</section>
-	<section id="portfolio">
-		<h2>Mes Projets</h2>
-		<button class="btn-edit" style="display:none;">
-    modifier
-</button>
-		 <div class="filters">
-        <!-- les boutons seront créés par le JS -->
-    </div>
-		<div class="gallery">
-			
-	<!-- vide : le JavaScript génère les photos depuis l'API -->
+		<p>Mode édition</p>
+	</div>
+	<header>
+		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+		<nav>
+			<ul>
+				<li>projets</li>
+				<li>contact</li>
+				<li><a href="./login.html" id="nav-login">login</a></li>
+				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+			</ul>
+		</nav>
+	</header>
+	<main>
+		<section id="introduction">
+			<figure>
+				<img src="./assets/images/sophie-bluel.png" alt="">
+			</figure>
+			<article>
+				<h2>Designer d'espace</h2>
+				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
+				<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l'esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
+				<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
+			</article>
+		</section>
+		<section id="portfolio">
+			<div class="portfolio-header">
+				<h2>Mes Projets</h2>
+				<button class="btn-edit" style="display:none;">
+					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M11.333 2a1.886 1.886 0 0 1 2.667 2.667L4.933 13.733l-3.6.8.8-3.6L11.333 2z" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					modifier
+				</button>
+			</div>
+			<div class="filters">
+				<!-- les boutons seront créés par le JS -->
+			</div>
+			<div class="gallery">
+				<!-- vide : le JavaScript génère les photos depuis l'API -->
+			</div>
+		</section>
+		<section id="contact">
+			<h2>Contact</h2>
+			<p>Vous avez un projet ? Discutons-en !</p>
+			<form action="#" method="post">
+				<label for="name">Nom</label>
+				<input type="text" name="name" id="name">
+				<label for="email">Email</label>
+				<input type="email" name="email" id="email">
+				<label for="message">Message</label>
+				<textarea name="message" id="message" cols="30" rows="10"></textarea>
+				<input type="submit" value="Envoyer">
+			</form>
+		</section>
+	</main>
+	<footer>
+		<nav>
+			<ul>
+				<li>Mentions Légales</li>
+			</ul>
+		</nav>
+	</footer>
+
+	<!-- ── MODALE ── -->
+	<div id="modal" class="modal hidden">
+		<div class="modal-wrapper">
+			<button class="modal-close">&times;</button>
+			<button class="modal-back hidden">&#8592;</button>
+
+			<!-- Vue 1 : galerie admin -->
+			<div id="modal-gallery">
+				<h3>Galerie photo</h3>
+				<div class="modal-photos"></div>
+				<hr class="modal-hr">
+				<button id="btn-add-photo">Ajouter une photo</button>
+			</div>
+
+			<!-- Vue 2 : formulaire ajout -->
+			<div id="modal-form" class="hidden">
+				<h3>Ajout photo</h3>
+				<form id="add-work-form">
+					<!-- Zone upload -->
+					<div class="upload-zone" id="upload-zone">
+						<input type="file" id="work-image" accept="image/jpeg,image/png" hidden>
+						<img id="preview" style="display:none;">
+						<div class="upload-placeholder" id="upload-placeholder">
+							<div class="upload-icon">
+								<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<rect x="4" y="8" width="32" height="26" rx="3" fill="none" stroke="#9bb5c0" stroke-width="1.5"/>
+									<circle cx="14" cy="17" r="3" fill="#9bb5c0"/>
+									<path d="M6 30 L14 20 L21 27 L27 21 L34 30" fill="none" stroke="#9bb5c0" stroke-width="1.5" stroke-linejoin="round"/>
+								</svg>
+							</div>
+							<button type="button" class="btn-upload-trigger" id="btn-upload-trigger">+ Ajouter photo</button>
+							<p class="upload-hint">jpg, png : 4mo max</p>
+						</div>
+					</div>
+
+					<div class="form-field">
+						<label for="work-title">Titre</label>
+						<input type="text" id="work-title" required>
+					</div>
+
+					<div class="form-field">
+						<label for="work-category">Catégorie</label>
+						<select id="work-category" required>
+							<option value=""></option>
+						</select>
+					</div>
+
+					<hr class="modal-hr">
+
+					<p id="form-error" style="display:none; color:#e74c3c; font-size:13px; text-align:center; margin-bottom:10px;"></p>
+					<button type="submit" id="btn-valider" class="btn-valider" disabled>Valider</button>
+				</form>
+			</div>
 		</div>
-	</section>
-	<section id="contact">
-		<h2>Contact</h2>
-		<p>Vous avez un projet ? Discutons-en !</p>
-		<form action="#" method="post">
-			<label for="name">Nom</label>
-			<input type="text" name="name" id="name">
-			<label for="email">Email</label>
-			<input type="email" name="email" id="email">
-			<label for="message">Message</label>
-			<textarea name="message" id="message" cols="30" rows="10"></textarea>
-			<input type="submit" value="Envoyer">
-		</form>
-	</section>
-</main>
+	</div>
 
-<footer>
-	<nav>
-		<ul>
-			<li>Mentions Légales</li>
-		</ul>
-	</nav>
-</footer>
-<div id="modal" class="modal hidden">
-    <div class="modal-wrapper">
-        <button class="modal-close">&times;</button>
-        <button class="modal-back hidden">&larr;</button>
-
-        <!-- Vue 1 : galerie admin -->
-        <div id="modal-gallery">
-            <h3>Galerie photo</h3>
-            <div class="modal-photos"></div>
-            <hr>
-            <button id="btn-add-photo">Ajouter une photo</button>
-        </div>
-
-        <!-- Vue 2 : formulaire ajout -->
-        <div id="modal-form" class="hidden">
-            <h3>Ajout photo</h3>
-            <form id="add-work-form">
-                <label>Image</label>
-                <input type="file" id="work-image" accept="image/*">
-                <img id="preview" style="display:none; max-width:200px;">
-
-                <label>Titre</label>
-                <input type="text" id="work-title" placeholder="Titre" required>
-
-                <label>Catégorie</label>
-                <select id="work-category" required></select>
-
-                <p id="form-error" style="display:none; color:red;"></p>
-                <button type="submit">Valider</button>
-            </form>
-        </div>
-    </div>
-</div>
-<script src="./assets/script.js"></script>
+	<script src="./assets/script.js"></script>
 </body>
 </html>
