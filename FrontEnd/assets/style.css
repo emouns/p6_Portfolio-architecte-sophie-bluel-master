@@ -345,8 +345,7 @@ footer nav ul {
   padding: 2rem;
   border-radius: 10px;
   width: 630px;
-  min-height: 680px;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
   position: relative;
 }
@@ -403,22 +402,23 @@ footer nav ul {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  flex: 1;
+}
+
+#modal-form input,
+#modal-form select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 #modal-form button[type="submit"] {
-  margin-top: auto;
   background-color: #1d6154;
   color: white;
   padding: 0.75rem;
   border: none;
-  border-radius: 60px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
-  font-family: "Work Sans", sans-serif;
-  font-weight: 600;
-  width: 220px;
-  align-self: center;
 }
 
 #preview {
@@ -477,19 +477,16 @@ footer nav ul {
 }
 
 /* ── Modale wrapper — taille identique pour les 2 vues ── */
-/* Galerie : ~620px x 680px | Ajout : ~540px x 680px
-   On utilise 630px pour harmoniser comme sur les screenshots */
+/* Galerie : ~630px x 700px+ | Ajout : ~630px x 460px
+   On utilise 630px de large, hauteur élargie pour coller au Figma */
 .modal-wrapper {
   background-color: #fff;
   border-radius: 10px;
   width: 630px;
-  min-height: 680px;
-  max-height: 90vh;
+  max-height: 92vh;
   overflow-y: auto;
   position: relative;
   padding: 40px 46px 40px;
-  display: flex;
-  flex-direction: column;
 }
 
 /* ── Boutons fermer / retour ── */
@@ -535,7 +532,7 @@ footer nav ul {
 
 .modal-photos figure img {
   width: 100%;
-  height: 84px;
+  height: 100px;
   object-fit: cover;
   border-radius: 2px;
   display: block;
@@ -573,10 +570,10 @@ footer nav ul {
   margin: 20px 0;
 }
 
-/* ── Bouton "Ajouter une photo" (vue 1) — poussé en bas ── */
+/* ── Bouton "Ajouter une photo" (vue 1) ── */
 #btn-add-photo {
   display: block;
-  margin: auto auto 0;
+  margin: 0 auto;
   background-color: #1d6154;
   color: white;
   border: none;
