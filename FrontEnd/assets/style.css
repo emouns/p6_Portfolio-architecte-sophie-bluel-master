@@ -650,6 +650,7 @@ footer nav ul {
 
 .btn-upload-trigger {
   background-color: #c8d8e0;
+  width: 237px;
   color: #1d6154;
   border: none;
   border-radius: 60px;
@@ -723,7 +724,7 @@ footer nav ul {
    Désactivé quand champs vides, activé dès que tout est rempli */
 .btn-valider {
   display: block;
-  width: 240px;
+  width: 237px;
   margin: 0 auto;
   margin-top: auto;
   background-color: #a0a0a0;
@@ -738,7 +739,7 @@ footer nav ul {
   transition: background 0.2s;
 }
 .btn-valider.active {
-  background-color: #1d6154;
+  background-color: #174f44;
   cursor: pointer;
 }
 .btn-valider.active:hover {
