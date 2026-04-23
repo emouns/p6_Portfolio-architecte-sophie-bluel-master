@@ -433,7 +433,7 @@ footer nav ul {
 /* ── Portfolio header : h2 + btn-edit alignés sur la même ligne ── */
 .portfolio-header {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: center;
   gap: 20px;
   margin-bottom: 2em;
