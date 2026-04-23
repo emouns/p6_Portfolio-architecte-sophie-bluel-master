@@ -530,7 +530,12 @@ footer nav ul {
   flex: 1;
   min-height: 100%;
 }
-
+#modal-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100%;
+}
 #modal-gallery h3,
 #modal-form h3 {
   font-family: "Syne", sans-serif;
@@ -720,6 +725,7 @@ footer nav ul {
   display: block;
   width: 240px;
   margin: 0 auto;
+  margin-top: auto;
   background-color: #a0a0a0;
   color: white;
   border: none;
