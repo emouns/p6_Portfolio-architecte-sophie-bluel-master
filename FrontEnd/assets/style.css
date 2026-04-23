@@ -724,7 +724,7 @@ footer nav ul {
    Désactivé quand champs vides, activé dès que tout est rempli */
 .btn-valider {
   display: block;
-  width: 320px;
+  width: 300px !important;
   margin: 0 auto;
   margin-top: auto;
   background-color: #a0a0a0;
