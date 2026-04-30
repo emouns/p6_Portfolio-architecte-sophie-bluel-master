@@ -250,7 +250,7 @@ if (addWorkForm) {
       allWorks.push(newWork)
       displayWorks(allWorks)                                    //ajout du projet allwork//
       loadModalGallery()                                        // recharge de la modale//
-      showGalleryView()                                         //retour sur la cue de la galerie//
+      showGalleryView()                                         //retour sur la Vue de la galerie//
       formError.style.display = 'none'
     } else {
       formError.style.display = 'block'
