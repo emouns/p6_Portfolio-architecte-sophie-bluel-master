@@ -3,28 +3,28 @@ const API_URL = 'http://localhost:5678/api'
 let allWorks = []
 
 // ── 1. Récupérer les travaux ───────────────────────────
-async function fetchWorks() {
-  const response = await fetch(`${API_URL}/works`)
-  return await response.json()
+async function fetchWorks() {                               //cherche et trouve tous les projets sur le serveur//
+  const response = await fetch(`${API_URL}/works`)          //appel GET/works sur l'api ,attend la reponse avec await// 
+  return await response.json()                              //transforme le j.son  en tableau J.S ,le renvois stocké dans allworks au démmarrage//
 }
 
 // ── 2. Créer un élément <figure> ───────────────────────
-function createWorkElement(work) {
+function createWorkElement(work) {                              //fabrique une carte HTML avec (image,legende,data)
   const figure     = document.createElement('figure')
   const img        = document.createElement('img')
-  const figcaption = document.createElement('figcaption')
-  img.src                = work.imageUrl
+  const figcaption = document.createElement('figcaption')       //légende sous l'image//
+  img.src                = work.imageUrl                        //propriété de l'objet j.son//
   img.alt                = work.title
   figcaption.textContent = work.title
   figure.appendChild(img)
   figure.appendChild(figcaption)
-  figure.dataset.id       = work.id
-  figure.dataset.category = work.categoryId
+  figure.dataset.id       = work.id                              // colle l'id du projet sur la carte//
+  figure.dataset.category = work.categoryId                    // colle la catégorie et pour le filtre //
   return figure
 }
 
 // ── 3. Afficher les travaux ────────────────────────────
-function displayWorks(works) {
+function displayWorks(works) {                                    //vide la galerie et affiche les projets en parametres//
   const gallery = document.querySelector('.gallery')
   gallery.innerHTML = ''
   works.forEach(work => gallery.appendChild(createWorkElement(work)))
@@ -32,22 +32,22 @@ function displayWorks(works) {
 
 // ── 4. Init ────────────────────────────────────────────
 async function init() {
-  allWorks = await fetchWorks()
-  displayWorks(allWorks)
-  const categories = await fetchCategories()
-  createFilterButtons(categories)
-  checkAdminMode()
+  allWorks = await fetchWorks()   // charge les photos //
+  displayWorks(allWorks)                // affiches les photos //
+  const categories = await fetchCategories()  //charges les catégories //
+  createFilterButtons(categories)       //crée les boutons filtre //
+  checkAdminMode()                 // vérifie adnim //
 }
 init()
 
 // ── 5. Catégories ──────────────────────────────────────
-async function fetchCategories() {
+async function fetchCategories() {                             //cherche la liste des catégories sur le serveur//
   const response = await fetch(`${API_URL}/categories`)
   return await response.json()
 }
 
 // ── 6. Filtres ─────────────────────────────────────────
-function createFilterButtons(categories) {
+function createFilterButtons(categories) {                    // créer les boutons  de filtres (tous,objets,appart) //
   const filtersDiv = document.querySelector('.filters')
   const btnAll = document.createElement('button')
   btnAll.textContent = 'Tous'
@@ -65,16 +65,16 @@ function createFilterButtons(categories) {
   })
 }
 
-function setActiveBtn(activeBtn) {
+function setActiveBtn(activeBtn) {                           //met en surbrillance le bouton filtre cliqué//
   document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'))
   activeBtn.classList.add('active')
 }
 
 // ── 7. Mode admin ──────────────────────────────────────
-function checkAdminMode() {
+function checkAdminMode() {                                 //vérifie si l'utilisateur est en mode adnim//
   const token = localStorage.getItem('token')
   if (token) {
-    const navLogin = document.querySelector('#nav-login')
+    const navLogin = document.querySelector('#nav-login')    //lit le token  dans localstorage si présent//
     navLogin.textContent = 'logout'
     navLogin.removeAttribute('href')
     navLogin.addEventListener('click', () => { localStorage.removeItem('token'); location.reload() })
@@ -121,7 +121,7 @@ const TRASH_SVG = `<svg class="trash-icon" viewBox="0 0 14 14" fill="none" xmlns
 </svg>`
 
 function loadModalGallery() {
-  const container = document.querySelector('.modal-photos')
+  const container = document.querySelector('.modal-photos')     //rempli la galerie de la modale avec les projet + la poubelle//
   container.innerHTML = ''
   allWorks.forEach(work => {
     const figure = document.createElement('figure')
@@ -139,7 +139,7 @@ function loadModalGallery() {
 }
 
 // ── 10. Supprimer ──────────────────────────────────────
-async function deleteWork(id, figureElement) {
+async function deleteWork(id, figureElement) {                   //supprime un projet  coté serveur et dans la page //
   const token = localStorage.getItem('token')
   const response = await fetch(`${API_URL}/works/${id}`, {
     method: 'DELETE',
@@ -154,8 +154,8 @@ async function deleteWork(id, figureElement) {
 }
 
 // ── 11. Select catégories ──────────────────────────────
-async function fillCategorySelect() {
-  const categories = await fetchCategories()
+async function fillCategorySelect() {                         //remplis le menu deroulant des catégories dans le formulaire d'ajout//
+  const categories = await fetchCategories()                  // remet une option vide par defaut et aoute une option par catégories//
   const select = document.querySelector('#work-category')
   select.innerHTML = '<option value=""></option>'
   categories.forEach(cat => {
@@ -164,7 +164,7 @@ async function fillCategorySelect() {
     option.textContent = cat.name
     select.appendChild(option)
   })
-  checkFormValidity()
+  checkFormValidity()                                        
 }
 
 // ── 12. Upload & preview ───────────────────────────────
@@ -193,15 +193,15 @@ if (workImage) {
 }
 
 // ── 13. Validation Valider ────────────────────────────
-function checkFormValidity() {
-  const image    = workImage && workImage.files[0]
+function checkFormValidity() {                                    //active ou desactive le bouton valider si leformulaire est completé ou non//
+  const image    = workImage && workImage.files[0]              
   const title    = document.querySelector('#work-title')
   const category = document.querySelector('#work-category')
   const btnVal   = document.querySelector('#btn-valider')
   if (!btnVal) return
-  const ok = !!(image && title && title.value.trim() !== '' && category && category.value !== '')
-  btnVal.disabled = !ok
-  btnVal.classList.toggle('active', ok)
+  const ok = !!(image && title && title.value.trim() !== '' && category && category.value !== '')  //vérifie si toute les condition réunis//
+  btnVal.disabled = !ok                                                                             //bouton vert actif //
+  btnVal.classList.toggle('active', ok)                                                             //bouton grisé//
 }
 
 const workTitle    = document.querySelector('#work-title')
@@ -210,9 +210,9 @@ if (workTitle)    workTitle.addEventListener('input', checkFormValidity)
 if (workCategory) workCategory.addEventListener('change', checkFormValidity)
 
 // ── 14. Reset formulaire ───────────────────────────────
-function resetForm() {
+function resetForm() {                                         //remet le formulaire a zero aprés ajout ou ferme de la modale//
   const form = document.querySelector('#add-work-form')
-  if (form) form.reset()
+  if (form) form.reset()                                       //renitialise le formulaire html//
   if (preview) { preview.src = ''; preview.style.display = 'none' }
   if (uploadPlaceholder) uploadPlaceholder.style.display = 'flex'
   const btnVal = document.querySelector('#btn-valider')
@@ -222,7 +222,7 @@ function resetForm() {
 }
 
 // ── 15. Ajouter un travail ─────────────────────────────
-const addWorkForm = document.querySelector('#add-work-form')
+const addWorkForm = document.querySelector('#add-work-form')    //envoi le nouveau projet (image) au serveur en cliquant sur le bouton valider//
 if (addWorkForm) {
   addWorkForm.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -236,21 +236,21 @@ if (addWorkForm) {
       formError.textContent   = 'Tous les champs sont obligatoires'
       return
     }
-    const formData = new FormData()
-    formData.append('image', image)
+    const formData = new FormData()                               //construit un format data avec images+titre+catégorie+post/work//
+    formData.append('image', image)                               
     formData.append('title', title)
     formData.append('category', category)
-    const response = await fetch(`${API_URL}/works`, {
+    const response = await fetch(`${API_URL}/works`, {             
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
       body: formData
     })
-    if (response.ok) {
+    if (response.ok) {                                          //work avec token si ok //
       const newWork = await response.json()
       allWorks.push(newWork)
-      displayWorks(allWorks)
-      loadModalGallery()
-      showGalleryView()
+      displayWorks(allWorks)                                    //ajout du projet allwork//
+      loadModalGallery()                                        // recharge de la modale//
+      showGalleryView()                                         //retour sur la cue de la galerie//
       formError.style.display = 'none'
     } else {
       formError.style.display = 'block'
