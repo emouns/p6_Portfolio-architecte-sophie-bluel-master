@@ -130,18 +130,21 @@ table {
 /** end reset css **/
 
 body {
-  max-width: 1140px;
-  margin: auto;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
   font-family: "Work Sans";
   font-size: 14px;
+  box-sizing: border-box;
 }
 header {
   display: flex;
   justify-content: space-between;
-  margin: 50px 0;
+  align-items: center;
+  margin: 50px 5%;
 }
 section {
-  margin: 50px 0;
+  margin: 50px 5%;
 }
 
 h1 {
@@ -167,6 +170,7 @@ nav ul {
   display: flex;
   align-items: center;
   list-style-type: none;
+  gap: 16px;
 }
 nav li {
   padding: 0 10px;
@@ -288,7 +292,7 @@ input[type="submit"] {
 footer nav ul {
   display: flex;
   justify-content: flex-end;
-  margin: 2em;
+  margin: 2em 5%;
 }
 
 /* ── Mode édition : bannière noire en haut ── */
@@ -612,4 +616,106 @@ footer nav ul {
 }
 .btn-valider.active:hover {
   background-color: #174f44;
+}
+
+/* ══════════════════════════════════════════
+   PAGE LOGIN
+   ══════════════════════════════════════════ */
+
+body:has(#login) {
+  background-color: #f5f3ee;
+}
+
+#login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+  padding: 40px 0;
+}
+
+#login h2 {
+  font-family: "Syne", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1d6154;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+#login-form {
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+  gap: 6px;
+}
+
+#login-form label {
+  font-family: "Work Sans", sans-serif;
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 400;
+}
+
+#login-form input[type="email"],
+#login-form input[type="password"] {
+  width: 100%;
+  padding: 14px 12px;
+  border: 1px solid #d0cec9;
+  border-radius: 4px;
+  background: #fff;
+  font-family: "Work Sans", sans-serif;
+  font-size: 0.95rem;
+  color: #333;
+  outline: none;
+  box-sizing: border-box;
+  margin-bottom: 18px;
+  transition: border-color 0.2s;
+}
+
+#login-form input[type="email"]:focus,
+#login-form input[type="password"]:focus {
+  border-color: #1d6154;
+}
+
+#login-form button[type="submit"] {
+  display: block;
+  margin: 10px auto 0;
+  width: 180px;
+  padding: 13px 20px;
+  background-color: #1d6154;
+  color: #fff;
+  border: none;
+  border-radius: 60px;
+  font-family: "Work Sans", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#login-form button[type="submit"]:hover {
+  background-color: #174f44;
+}
+
+#error-msg {
+  font-family: "Work Sans", sans-serif;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.forgot-password {
+  display: block;
+  text-align: center;
+  margin-top: 14px;
+  font-family: "Work Sans", sans-serif;
+  font-size: 0.9rem;
+  color: #333;
+  text-decoration: underline;
+}
+
+.forgot-password:hover {
+  color: #1d6154;
 }
