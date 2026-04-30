@@ -247,7 +247,7 @@ if (addWorkForm) {
     })
     if (response.ok) {                                          //work avec token si ok //
       const newWork = await response.json()
-      allWorks.push(newWork)
+      allWorks.push(newWork)                                    //ajoute au tableau local//
       displayWorks(allWorks)                                    //ajout du projet allwork//
       loadModalGallery()                                        // recharge de la modale//
       showGalleryView()                                         //retour sur la Vue de la galerie//
